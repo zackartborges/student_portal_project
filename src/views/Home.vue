@@ -2,7 +2,7 @@
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
     <HelloWorld msg="Welcome to Your student portal" />
-    <p>"I have no idea what I am doing"</p>
+    <h1>"I have no idea what I am doing"</h1>
   </div>
 </template>
 
