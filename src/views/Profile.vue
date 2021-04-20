@@ -52,12 +52,16 @@
 <style></style>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
 
 export default {
   data: function () {
     return {
       student: {},
+      name: "",
+      description: "",
+      url: "",
+      screenshot: "",
       skills_list: [],
       new_skill: "",
       errors: [],
@@ -65,9 +69,55 @@ export default {
     };
   },
   mounted: function () {
-    // axios.get
+    this.showStudent();
   },
   methods: {
+    // incomplete/ need routes to correctly create these methods
+
+    showStudent: function () {
+      axios.get("/api/students/" + this.student.id).then((response) => {
+        console.log(response.data);
+        this.student = response.data;
+      });
+    },
+    createCapstone: function () {
+      console.log("Creating your capstone info!");
+      var params = {
+        name: this.name,
+        description: this.description,
+        url: this.url,
+        screenshot: this.screenshot,
+      };
+      axios
+        .post("/api/students/" + this.student.id, params)
+        .then(() => {
+          console.log("capstone added!");
+        })
+        .catch((error) => console.log(error.response));
+    },
+    updateCapstone: function (capstone) {
+      console.log("Updating capstone");
+      var params = {
+        name: capstone.name,
+        description: capstone.description,
+        url: capstone.url,
+        screenshot: capstone.screenshot,
+      };
+      axios
+        .patch("/api/students/" + this.student.id, params)
+        .then(() => {
+          // this.$router.push("/capstones/" + this.capstone.id);
+        })
+        .catch((error) => console.log(error.response));
+    },
+    destroyCapstone: function (capstone) {
+      axios.delete("/api/students/" + capstone.id).then(() => {
+        console.log("Destroyed");
+        // this.$router.push("/students");
+      });
+    },
+  },
+ {
     createSkill() {
       // var params = {
       //   skill: this.new_skill,
