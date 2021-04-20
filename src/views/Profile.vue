@@ -269,6 +269,7 @@ export default {
       var index = this.skills_list.indexOf(skill);
       this.skills_list.splice(index, 1);
     },
+
     updateStudent: function (student) {
       let params = {
         first_name: student.first_name,
