@@ -87,23 +87,23 @@
           <h1>New Experience</h1>
           <div class="form-group">
             <label>Start Date:</label>
-            <input type="text" class="form-control" v-model="startDate" />
+            <input type="text" class="form-control" v-model="experiences.startDate" />
           </div>
           <div class="form-group">
             <label>End Date:</label>
-            <input type="text" class="form-control" v-model="endDate" />
+            <input type="text" class="form-control" v-model="experiences.endDate" />
           </div>
           <div class="form-group">
             <label>Job Title:</label>
-            <input type="text" class="form-control" v-model="jobTitle" />
+            <input type="text" class="form-control" v-model="experiences.jobTitle" />
           </div>
           <div class="form-group">
             <label>Company Name:</label>
-            <input type="text" class="form-control" v-model="companyName" />
+            <input type="text" class="form-control" v-model="experiences.companyName" />
           </div>
           <div class="form-group">
             <label>Details:</label>
-            <input type="text" class="form-control" v-model="details" />
+            <input type="text" class="form-control" v-model="experiences.details" />
           </div>
           <button v-on:click="createExperience()">Submit</button>
           <button>close</button>
