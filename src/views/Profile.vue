@@ -116,8 +116,6 @@ export default {
         // this.$router.push("/students");
       });
     },
-  },
- {
     createSkill() {
       // var params = {
       //   skill: this.new_skill,
