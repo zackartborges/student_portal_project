@@ -33,32 +33,31 @@
       <dialog id="create-experience-window">
         <form method="dialog">
           <h1>New Experience</h1>
-            <div class="form-group">
-              <label>Start Date:</label>
-              <input type="text" class="form-control" v-model="startDate" />
-            </div>
-            <div class="form-group">
-              <label>End Date:</label>
-              <input type="text" class="form-control" v-model="endDate" />
-            </div>
-               <div class="form-group">
-              <label>Job Title:</label>
-              <input type="text" class="form-control" v-model="jobTitle" />
-            </div>
-               <div class="form-group">
-              <label>Company Name:</label>
-              <input type="text" class="form-control" v-model="companyName" />
-            </div>
-               <div class="form-group">
-              <label>Details:</label>
-              <input type="text" class="form-control" v-model="details" />
-            </div>
-            <button v-on:click="createExperience()">Submit</button>
-            <button>close</button>
+          <div class="form-group">
+            <label>Start Date:</label>
+            <input type="text" class="form-control" v-model="startDate" />
+          </div>
+          <div class="form-group">
+            <label>End Date:</label>
+            <input type="text" class="form-control" v-model="endDate" />
+          </div>
+          <div class="form-group">
+            <label>Job Title:</label>
+            <input type="text" class="form-control" v-model="jobTitle" />
+          </div>
+          <div class="form-group">
+            <label>Company Name:</label>
+            <input type="text" class="form-control" v-model="companyName" />
+          </div>
+          <div class="form-group">
+            <label>Details:</label>
+            <input type="text" class="form-control" v-model="details" />
+          </div>
+          <button v-on:click="createExperience()">Submit</button>
+          <button>close</button>
         </form>
       </dialog>
     </div>
-
 
     <div class="student-education">
       <button v-on:click="showEducation()">Education Input</button>
@@ -218,8 +217,7 @@ export default {
       var index = this.skills_list.indexOf(skill);
       this.skills_list.splice(index, 1);
     },
-  },
-  methods: {
+
     createEducation: function () {
       console.log("Creating Eduction info");
       var params = {
@@ -256,7 +254,7 @@ export default {
         })
         .catch((error) => console.log(error.response));
     },
-  },
+
     createExperience: function () {
       console.log("Creating an experience");
       var params = {
@@ -266,15 +264,13 @@ export default {
         companyName: this.companyName,
         details: this.details,
       };
-      axios
-        .post("/api/profile", params)
-        .then(() => {
-          this.$router.push("/profile");
-        })
+      axios.post("/api/profile", params).then(() => {
+        this.$router.push("/profile");
+      });
     },
     createWindow: function () {
       document.querySelector("#create-experience-window").showModal();
-    }
+    },
   },
 };
 </script>
