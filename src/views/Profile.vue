@@ -37,16 +37,58 @@
 <style></style>
 
 <script>
+import axios from "axios";
 export default {
   data: function () {
     return {
       student: {},
+      capstoneName: "",
+      capstoneDescription: "",
+      capstoneUrl: "",
+      caspstoneScreenshot: "",
       // each variable above will need data here!
     };
   },
   mounted: function () {
-    // axios.get
+    this.showStudent();
   },
-  methods: {},
+  methods: {
+    showStudent: function () {
+      axios.get("/api/students/" + this.student.id).then((response) => {
+        console.log(response.data);
+        this.student = response.data;
+      });
+    },
+    createCapstone: function () {
+      console.log("Creating your capstone info!");
+      var params = {
+        name: this.name,
+        description: this.description,
+        url: this.url,
+        screenshot: this.screenshot,
+      };
+      axios
+        .post("/api/students", params)
+        .then(() => {
+          console.log("capstone added!");
+        })
+        .catch((error) => console.log(error.response));
+    },
+    updateCapstone: function (capstone) {
+      console.log("Updating capstone");
+      var params = {
+        name: capstone.name,
+        description: capstone.description,
+        url: capstone.url,
+        screenshot: capstone.screenshot,
+      };
+      axios
+        .patch("/api/capstones/" + this.$route.params.id, params)
+        .then(() => {
+          this.$router.push("/capstones/" + this.capstone.id);
+        })
+        .catch((error) => console.log(error.response));
+    },
+  },
 };
 </script>
