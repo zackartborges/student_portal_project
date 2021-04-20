@@ -26,7 +26,7 @@
       <!-- <p>{{student.github_url}}</p> -->
       <p>Github:</p>
       <!-- <p>{{student.bio}}</p> -->
-      <button>Edit</button>
+      <button type="button" v-on:click="editStudentModal">Edit</button>
       <dialog id="student-details">
         <form method="dialog">
           <h1>Edit Your Info</h1>
@@ -119,6 +119,10 @@ export default {
         console.log("Success!", response.data);
       });
     },
+    editStudentModal: function () {
+      document.querySelector("#student-details").showModal();
+    },
   },
 };
+// };
 </script>
