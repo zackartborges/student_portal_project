@@ -27,7 +27,34 @@
       <p>Github:</p>
       <!-- <p>{{student.bio}}</p> -->
     </div>
-    <div id="student-experiences"></div>
+    <div id="student-experiences">
+      <div class="container experiences-new">
+        <form v-on:submit.prevent="createExperience()">
+          <h1>New Experience</h1>
+            <div class="form-group">
+              <label>Start Date:</label>
+              <input type="text" class="form-control" v-model="startDate" />
+            </div>
+            <div class="form-group">
+              <label>End Date:</label>
+              <input type="text" class="form-control" v-model="endDate" />
+            </div>
+               <div class="form-group">
+              <label>Job Title:</label>
+              <input type="text" class="form-control" v-model="jobTitle" />
+            </div>
+               <div class="form-group">
+              <label>Company Name:</label>
+              <input type="text" class="form-control" v-model="companyName" />
+            </div>
+               <div class="form-group">
+              <label>Details:</label>
+              <input type="text" class="form-control" v-model="details" />
+            </div>
+            <input type="submit" class="btn" value="Submit" />
+        </form>
+      </div>
+    </div>
     <div id="student-education"></div>
     <div id="student-skills"></div>
     <div id="student-capstone"></div>
@@ -41,12 +68,31 @@ export default {
   data: function () {
     return {
       student: {},
+      experiences: {
+        startDate: "",
+        endDate: "",
+        jobTitle: "",
+        companyName: "",
+        details: "",
+      },
       // each variable above will need data here!
     };
   },
   mounted: function () {
     // axios.get
   },
-  methods: {},
+  methods: {
+    createExperience: function () {
+      console.log("Creating an experience");
+      var params = {
+        startDate: this.startDate,
+        endDate: this.endDate,
+        jobTitle: this.jobTitle,
+        companyName: this.companyName,
+        details: this.details,
+      };
+
+    }
+  },
 };
 </script>
