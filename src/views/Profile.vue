@@ -58,7 +58,7 @@ export default {
   data: function () {
     return {
       student: {},
-      skills_list: ["skill 1", "skill 2"],
+      skills_list: [],
       new_skill: "",
       errors: [],
       // each variable above will need data here!
