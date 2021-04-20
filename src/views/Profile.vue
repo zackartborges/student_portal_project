@@ -327,7 +327,6 @@ export default {
         })
         .catch((error) => console.log(error.response));
     },
-
     createExperience: function () {
       console.log("Creating an experience");
       var params = {
