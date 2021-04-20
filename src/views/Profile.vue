@@ -141,12 +141,36 @@
         </form>
       </dialog>
     </div>
+
+    <div id="student-capstone">
+      <button v-on:click="createCapstoneWindow">Add Capstone</button>
+      <dialog id="create-capstone-window">
+        <h3>Capstone:</h3>
+        <form v-on:submit.prevent="createCapstone()">
+          <div class="form-group">
+            <label>Name:</label>
+            <input type="text" class="form-control" v-model="name" />
+          </div>
+          <div class="form-group">
+            <label>Description:</label>
+            <input type="text" class="form-control" v-model="description" />
+          </div>
+          <div class="form-group">
+            <label>URL:</label>
+            <input type="text" class="form-control" v-model="url" />
+          </div>
+          <div class="form-group">
+            <label>Screenshot:</label>
+            <input type="text" class="form-control" v-model="screenshot" />
+          </div>
+        </form>
+      </dialog>
+    </div>
+
     <div id="student-skills">
       <h3>Skills:</h3>
-    </div>
-    <div id="student-capstone">
-      <form v-on:submit.prevent="createSkill()">
-        <input v-model="new_skill" type="text" id="skill-input" placeholder="CRUD Apps, Ruby, etc.¸" />
+      <form v-on:submit.prevent="createSkills()">
+        <input v-model="new_s" type="text" id="skill-input" placeholder="CRUD Apps, Ruby, etc.¸" />
         <button type="submit">Add Skill</button>
       </form>
       <div id="skills-list" v-for="skill in skills_list" :key="skill">
@@ -165,6 +189,7 @@
 
 <script>
 import axios from "axios";
+// import func from "vue-editor-bridge";
 export default {
   data: function () {
     return {
@@ -214,9 +239,9 @@ export default {
         screenshot: this.screenshot,
       };
       axios
-        .post("/api/students/" + this.student.id, params)
+        .post("/api/profile/" + this.student.id, params)
         .then(() => {
-          console.log("capstone added!");
+          this.$router.push("/profile");
         })
         .catch((error) => console.log(error.response));
     },
@@ -343,6 +368,9 @@ export default {
     },
     createWindow: function () {
       document.querySelector("#create-experience-window").showModal();
+    },
+    createCapstoneWindow: function () {
+      document.querySelector("#create-capstone-window").showModal();
     },
   },
 };
