@@ -6,9 +6,10 @@ import axios from "axios";
 axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 axios.defaults.baseURL = process.env.NODE_ENV === "development" ? "http://localhost:3000" : "/";
 
+
 Vue.config.productionTip = false;
 
 new Vue({
   router,
-  render: (h) => h(App),
+  render: h => h(App)
 }).$mount("#app");
