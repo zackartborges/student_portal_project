@@ -42,10 +42,10 @@ export default {
   data: function () {
     return {
       student: {},
-      capstoneName: "",
-      capstoneDescription: "",
-      capstoneUrl: "",
-      caspstoneScreenshot: "",
+      name: "",
+      description: "",
+      url: "",
+      screenshot: "",
       // each variable above will need data here!
     };
   },
