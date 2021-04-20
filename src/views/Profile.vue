@@ -28,7 +28,55 @@
       <!-- <p>{{student.bio}}</p> -->
       <button>Edit</button>
       <dialog id="student-details">
-        <form method="dialog"></form>
+        <form method="dialog">
+          <h1>Edit Your Info</h1>
+          <p>
+            First Name:
+            <input type="text" v-model="student.first_name" />
+          </p>
+          <p>
+            Last Name:
+            <input type="text" v-model="student.last_name" />
+          </p>
+          <p>
+            Email:
+            <input type="text" v-model="student.email" />
+          </p>
+          <p>
+            Phone:
+            <input type="text" v-model="student.phone" />
+          </p>
+          <p>
+            Bio:
+            <input type="text" v-model="student.bio" />
+          </p>
+          <p>
+            Linkedin Url:
+            <input type="text" v-model="student.linkedin_url" />
+          </p>
+          <p>
+            Twitter:
+            <input type="text" v-model="student.twitter_handle" />
+          </p>
+          <p>
+            Personal Website:
+            <input type="text" v-model="student.website_url" />
+          </p>
+          <p>
+            Resume Url:
+            <input type="text" v-model="student.resume_url" />
+          </p>
+          <p>
+            Github_url:
+            <input type="text" v-model="student.github_url" />
+          </p>
+          <p>
+            Photo:
+            <input type="text" v-model="student.photo" />
+          </p>
+          <button v-on:click="updateStudent(student)">Update</button>
+          <button>Close</button>
+        </form>
       </dialog>
     </div>
     <div id="student-experiences"></div>
@@ -41,7 +89,7 @@
 <style></style>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
 export default {
   data: function () {
     return {
@@ -53,24 +101,24 @@ export default {
     // axios.get
   },
   methods: {
-    // updateStudent: function (student) {
-    //   let params = {
-    //     first_name: student.first_name,
-    //     last_name: student.last_name,
-    //     email: student.email,
-    //     phone: student.phone,
-    //     bio: student.bio,
-    //     linkedin_url: student.linkedin_url,
-    //     twitter_handle: student.twitter_handle,
-    //     website_url: student.website_url,
-    //     resume_url: student.resume_url,
-    //     github_url: student.github_url,
-    //     photo: student.photo,
-    //   };
-    //   axios.patch("/api/students" + student.id, params).then((response) => {
-    //     console.log("Success!", response.data);
-    //   });
-    // },
+    updateStudent: function (student) {
+      let params = {
+        first_name: student.first_name,
+        last_name: student.last_name,
+        email: student.email,
+        phone: student.phone,
+        bio: student.bio,
+        linkedin_url: student.linkedin_url,
+        twitter_handle: student.twitter_handle,
+        website_url: student.website_url,
+        resume_url: student.resume_url,
+        github_url: student.github_url,
+        photo: student.photo,
+      };
+      axios.patch("/api/students" + student.id, params).then((response) => {
+        console.log("Success!", response.data);
+      });
+    },
   },
 };
 </script>
