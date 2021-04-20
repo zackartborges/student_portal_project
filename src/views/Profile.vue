@@ -53,6 +53,8 @@ export default {
     this.showStudent();
   },
   methods: {
+    // incomplete/ need routes to correctly create these methods
+
     showStudent: function () {
       axios.get("/api/students/" + this.student.id).then((response) => {
         console.log(response.data);
@@ -68,7 +70,7 @@ export default {
         screenshot: this.screenshot,
       };
       axios
-        .post("/api/students", params)
+        .post("/api/students/" + this.student.id, params)
         .then(() => {
           console.log("capstone added!");
         })
@@ -83,11 +85,17 @@ export default {
         screenshot: capstone.screenshot,
       };
       axios
-        .patch("/api/capstones/" + this.$route.params.id, params)
+        .patch("/api/students/" + this.student.id, params)
         .then(() => {
-          this.$router.push("/capstones/" + this.capstone.id);
+          // this.$router.push("/capstones/" + this.capstone.id);
         })
         .catch((error) => console.log(error.response));
+    },
+    destroyCapstone: function (capstone) {
+      axios.delete("/api/students/" + capstone.id).then(() => {
+        console.log("Destroyed");
+        // this.$router.push("/students");
+      });
     },
   },
 };
