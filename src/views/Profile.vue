@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div id="student-data">
-      <!-- v-for/v-bind image link {{stydent.photo}}-->
+      <!-- v-for/v-bind image link {{student.photo}}-->
       <img src="" alt="" />
       <!-- <h1>{{student.first_name}}</h1> -->
       <h3>First Name</h3>
@@ -26,6 +26,10 @@
       <!-- <p>{{student.github_url}}</p> -->
       <p>Github:</p>
       <!-- <p>{{student.bio}}</p> -->
+      <button>Edit</button>
+      <dialog id="student-details">
+        <form method="dialog"></form>
+      </dialog>
     </div>
     <div id="student-experiences"></div>
     <div id="student-education"></div>
@@ -37,6 +41,7 @@
 <style></style>
 
 <script>
+// import axios from "axios";
 export default {
   data: function () {
     return {
@@ -47,6 +52,25 @@ export default {
   mounted: function () {
     // axios.get
   },
-  methods: {},
+  methods: {
+    // updateStudent: function (student) {
+    //   let params = {
+    //     first_name: student.first_name,
+    //     last_name: student.last_name,
+    //     email: student.email,
+    //     phone: student.phone,
+    //     bio: student.bio,
+    //     linkedin_url: student.linkedin_url,
+    //     twitter_handle: student.twitter_handle,
+    //     website_url: student.website_url,
+    //     resume_url: student.resume_url,
+    //     github_url: student.github_url,
+    //     photo: student.photo,
+    //   };
+    //   axios.patch("/api/students" + student.id, params).then((response) => {
+    //     console.log("Success!", response.data);
+    //   });
+    // },
+  },
 };
 </script>
