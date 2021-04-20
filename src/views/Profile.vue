@@ -27,7 +27,38 @@
       <p>Github:</p>
       <!-- <p>{{student.bio}}</p> -->
     </div>
-    <div id="student-experiences"></div>
+
+    <div id="student-experiences">
+      <button v-on:click="createWindow">Add Experience</button>
+      <dialog id="create-experience-window">
+        <form method="dialog">
+          <h1>New Experience</h1>
+            <div class="form-group">
+              <label>Start Date:</label>
+              <input type="text" class="form-control" v-model="startDate" />
+            </div>
+            <div class="form-group">
+              <label>End Date:</label>
+              <input type="text" class="form-control" v-model="endDate" />
+            </div>
+               <div class="form-group">
+              <label>Job Title:</label>
+              <input type="text" class="form-control" v-model="jobTitle" />
+            </div>
+               <div class="form-group">
+              <label>Company Name:</label>
+              <input type="text" class="form-control" v-model="companyName" />
+            </div>
+               <div class="form-group">
+              <label>Details:</label>
+              <input type="text" class="form-control" v-model="details" />
+            </div>
+            <button v-on:click="createExperience()">Submit</button>
+            <button>close</button>
+        </form>
+      </dialog>
+    </div>
+
 
     <div class="student-education">
       <button v-on:click="showEducation()">Education Input</button>
@@ -59,10 +90,6 @@
         </form>
       </dialog>
     </div>
-
-    <div id="student-skills"></div>
-    <div id="student-capstone"></div>
-    <div id="student-education"></div>
     <div id="student-skills">
       <h3>Skills:</h3>
     </div>
@@ -87,11 +114,17 @@
 
 <script>
 import axios from "axios";
-
 export default {
   data: function () {
     return {
       student: {},
+      experiences: {
+        startDate: "",
+        endDate: "",
+        jobTitle: "",
+        companyName: "",
+        details: "",
+      },
       // education experience data
       start: "",
       end: "",
@@ -105,6 +138,7 @@ export default {
       skills_list: [],
       new_skill: "",
       errors: [],
+
       // each variable above will need data here!
     };
   },
@@ -224,6 +258,25 @@ export default {
         })
         .catch((error) => console.log(error.response));
     },
+  },
+    createExperience: function () {
+      console.log("Creating an experience");
+      var params = {
+        startDate: this.startDate,
+        endDate: this.endDate,
+        jobTitle: this.jobTitle,
+        companyName: this.companyName,
+        details: this.details,
+      };
+      axios
+        .post("/api/profile", params)
+        .then(() => {
+          this.$router.push("/profile");
+        })
+    },
+    createWindow: function () {
+      document.querySelector("#create-experience-window").showModal();
+    }
   },
 };
 </script>
