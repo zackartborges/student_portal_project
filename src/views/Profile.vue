@@ -28,6 +28,40 @@
       <!-- <p>{{student.bio}}</p> -->
     </div>
     <div id="student-experiences"></div>
+
+    <div class="student-education">
+      <button v-on:click="showEducation()">Education Input</button>
+      <dialog id="education-details">
+        <form method="dialog">
+          <h1>Education Experience</h1>
+          <div class="form-group">
+            <label>Start Date:</label>
+            <input type="text" class="form-control" v-model="start" />
+          </div>
+          <div class="form-group">
+            <label>End Date:</label>
+            <input type="text" class="form-control" v-model="end" />
+          </div>
+          <div class="form-group">
+            <label>Degree:</label>
+            <input type="text" class="form-control" v-model="degree" />
+          </div>
+          <div class="form-group">
+            <label>University Name:</label>
+            <input type="text" class="form-control" v-model="university" />
+          </div>
+          <div class="form-group">
+            <label>Details:</label>
+            <input type="text" class="form-control" v-model="details" />
+          </div>
+          <input type="submit" class="btn btn-primary" value="Submit" />
+          <button>Close</button>
+        </form>
+      </dialog>
+    </div>
+
+    <div id="student-skills"></div>
+    <div id="student-capstone"></div>
     <div id="student-education"></div>
     <div id="student-skills">
       <h3>Skills:</h3>
@@ -58,6 +92,12 @@ export default {
   data: function () {
     return {
       student: {},
+      // education experience data
+      start: "",
+      end: "",
+      degree: "",
+      university: "",
+      details: "",
       name: "",
       description: "",
       url: "",
@@ -145,6 +185,44 @@ export default {
       console.log("skill being deleted...");
       var index = this.skills_list.indexOf(skill);
       this.skills_list.splice(index, 1);
+    },
+  },
+  methods: {
+    createEducation: function () {
+      console.log("Creating Eduction info");
+      var params = {
+        startDate: this.startDate,
+        endDate: this.endDate,
+        degree: this.degree,
+        university: this.university,
+        details: this.details,
+      };
+      axios
+        .post("/api/education", params)
+        .then((response) => {
+          console.log(response.data);
+          this.education.push(response.data);
+        })
+        .catch((error) => console.log(error.response));
+    },
+    showEducation: function () {
+      document.querySelector("#education-details").showModal();
+    },
+    updateEducation: function (education) {
+      console.log("Updating Eduction info");
+      var params = {
+        startDate: this.startDate,
+        endDate: this.endDate,
+        degree: this.degree,
+        university: this.university,
+        details: this.details,
+      };
+      axios
+        .patch("/api/eduction" + education.id, params)
+        .then((response) => {
+          console.log("Success", response.data);
+        })
+        .catch((error) => console.log(error.response));
     },
   },
 };
