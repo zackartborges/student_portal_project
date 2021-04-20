@@ -28,8 +28,9 @@
       <!-- <p>{{student.bio}}</p> -->
     </div>
     <div id="student-experiences">
-      <div class="container experiences-new">
-        <form v-on:submit.prevent="createExperience()">
+      <button v-on:click="createWindow">Add Experience</button>
+      <dialog id="create-experience-window">
+        <form method="dialog">
           <h1>New Experience</h1>
             <div class="form-group">
               <label>Start Date:</label>
@@ -51,9 +52,10 @@
               <label>Details:</label>
               <input type="text" class="form-control" v-model="details" />
             </div>
-            <input type="submit" class="btn" value="Submit" />
+            <button v-on:click="createExperience()">Submit</button>
+            <button>close</button>
         </form>
-      </div>
+      </dialog>
     </div>
     <div id="student-education"></div>
     <div id="student-skills"></div>
@@ -64,6 +66,7 @@
 <style></style>
 
 <script>
+import axios from "axios";
 export default {
   data: function () {
     return {
@@ -91,7 +94,14 @@ export default {
         companyName: this.companyName,
         details: this.details,
       };
-
+      axios
+        .post("/api/profile", params)
+        .then(() => {
+          this.$router.push("/profile");
+        })
+    },
+    createWindow: function () {
+      document.querySelector("#create-experience-window").showModal();
     }
   },
 };
