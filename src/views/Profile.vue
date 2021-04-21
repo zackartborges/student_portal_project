@@ -164,6 +164,7 @@
             <input type="text" class="form-control" v-model="screenshot" />
           </div>
           <button v-on:click="createCapstone()">Submit</button>
+          <button v-on:click="updateCapstone()">Update</button>
           <button>close</button>
         </form>
       </dialog>
