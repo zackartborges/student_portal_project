@@ -9,23 +9,15 @@
       <!-- <h3>Last Name</h3> -->
       <p>{{ student.email }}</p>
       <!-- <p>Email</p> -->
-      <p>{{ student.phone }}</p>
+      <p>Phone Number: {{ student.phone }}</p>
       <p>Phone Number:</p>
-      <!-- <p>{{student.photo}}</p> -->
-      <p>Photo:</p>
-      <!-- <p>{{student.bio}}</p> -->
-      <p>Bio:</p>
-      <!-- <p>{{student.linkedin_url}}</p> -->
-      <p>Linkedin URL:</p>
-      <!-- <p>{{student.twitter_handle}}</p> -->
-      <p>Twitter:</p>
-      <!-- <p>{{student.website_url}}</p> -->
-      <p>Website:</p>
-      <!-- <p>{{student.resume_url}}</p> -->
-      <p>Resume:</p>
-      <!-- <p>{{student.github_url}}</p> -->
-      <p>Github:</p>
-      <!-- <p>{{student.bio}}</p> -->
+      <p>Profile Photo: {{ student.photo }}</p>
+      <p>Bio: {{ student.bio }}</p>
+      <p>Linked-In: {{ student.linkedin_url }}</p>
+      <p>Twitter: {{ student.twitter_handle }}</p>
+      <p>Website: {{ student.website_url }}</p>
+      <p>Resume: {{ student.resume_url }}</p>
+      <p>Github {{ student.github_url }}</p>
       <button type="button" v-on:click="editStudentModal">Edit</button>
       <dialog id="student-details">
         <form method="dialog">
@@ -81,6 +73,39 @@
     </div>
 
     <div id="student-experiences">
+      <h3>Experience:</h3>
+      <div id="experiences-list" v-for="experience in experiences" :key="experience.id">
+        <h4>{{ experience.company_name }}</h4>
+
+        <button v-on:click="createWindow">Add Experience</button>
+        <dialog id="create-experience-window">
+          <form method="dialog">
+            <h1>New Experience</h1>
+            <div class="form-group">
+              <label>Start Date:</label>
+              <input type="text" class="form-control" v-model="experiences.startDate" />
+            </div>
+            <div class="form-group">
+              <label>End Date:</label>
+              <input type="text" class="form-control" v-model="experiences.endDate" />
+            </div>
+            <div class="form-group">
+              <label>Job Title:</label>
+              <input type="text" class="form-control" v-model="experiences.jobTitle" />
+            </div>
+            <div class="form-group">
+              <label>Company Name:</label>
+              <input type="text" class="form-control" v-model="experiences.companyName" />
+            </div>
+            <div class="form-group">
+              <label>Details:</label>
+              <input type="text" class="form-control" v-model="experiences.details" />
+            </div>
+            <button v-on:click="createExperience()">Submit</button>
+            <button>close</button>
+          </form>
+        </dialog>
+      </div>
       <button v-on:click="createWindow">Add Experience</button>
       <dialog id="create-experience-window">
         <form method="dialog">
@@ -140,6 +165,7 @@
     </div>
 
     <div class="student-education">
+      <h3>Education:</h3>
       <button v-on:click="showEducation()">Education Input</button>
       <dialog id="education-details">
         <form method="dialog">
@@ -171,6 +197,7 @@
     </div>
 
     <div id="student-capstone">
+      <h3>Capstones:</h3>
       <button v-on:click="createCapstoneWindow">Add Capstone</button>
       <dialog id="create-capstone-window">
         <h3>Capstone:</h3>
@@ -246,7 +273,8 @@ export default {
       skills_list: ["alphabet", "soup"],
       new_skill: "",
       errors: [],
-
+      education_list: [],
+      capstones_list: [],
       // each variable above will need data here!
     };
   },
@@ -259,6 +287,9 @@ export default {
   mounted: function () {
     this.showStudent();
     this.showSkills();
+
+    this.showEducations();
+    this.showCapstones();
     this.showExperiences();
   },
   methods: {
@@ -276,12 +307,25 @@ export default {
         this.skills_list = response.data;
       });
     },
+    showEducations: function () {
+      axios.get("/api/education/").then((response) => {
+        console.log(response.data);
+        this.education_list = response.data;
+      });
+    },
+    showCapstones: function () {
+      axios.get("/api/capstones/").then((response) => {
+        console.log(response.data);
+        this.capstones_list = response.data;
+      });
+    },
     showExperiences: function () {
       axios.get("/api/experiences/").then((response) => {
         console.log(response.data);
         this.experiences = response.data;
       });
     },
+  },
     createCapstone: function () {
       console.log("Creating your capstone info!");
       var params = {
