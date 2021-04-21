@@ -87,19 +87,19 @@
           <h1>New Experience</h1>
           <div class="form-group">
             <label>Start Date:</label>
-            <input type="text" class="form-control" v-model="experiences.startDate" />
+            <input type="text" class="form-control" v-model="experiences.start_date" />
           </div>
           <div class="form-group">
             <label>End Date:</label>
-            <input type="text" class="form-control" v-model="experiences.endDate" />
+            <input type="text" class="form-control" v-model="experiences.end_date" />
           </div>
           <div class="form-group">
             <label>Job Title:</label>
-            <input type="text" class="form-control" v-model="experiences.jobTitle" />
+            <input type="text" class="form-control" v-model="experiences.job_title" />
           </div>
           <div class="form-group">
             <label>Company Name:</label>
-            <input type="text" class="form-control" v-model="experiences.companyName" />
+            <input type="text" class="form-control" v-model="experiences.company_name" />
           </div>
           <div class="form-group">
             <label>Details:</label>
@@ -107,6 +107,34 @@
           </div>
           <button v-on:click="createExperience()">Submit</button>
           <button>close</button>
+        </form>
+      </dialog>
+      <button type="button" v-on:click="editExperienceModal">Edit</button>
+      <dialog id="experience-details">
+        <form method="dialog">
+          <h1>Edit Your Experience</h1>
+          <p>
+            Start Date:
+            <input type="text" v-model="experience.start_date" />
+          </p>
+          <p>
+            End Date:
+            <input type="text" v-model="experience.end_date" />
+          </p>
+          <p>
+            Job Title:
+            <input type="text" v-model="experience.job_title" />
+          </p>
+          <p>
+            Company Name:
+            <input type="text" v-model="experience.company_name" />
+          </p>
+          <p>
+            Details:
+            <input type="text" v-model="experience.details" />
+          </p>
+          <button v-on:click="updateExperience(experience)">Update</button>
+          <button>Close</button>
         </form>
       </dialog>
     </div>
@@ -231,6 +259,7 @@ export default {
   mounted: function () {
     this.showStudent();
     this.showSkills();
+    this.showExperiences();
   },
   methods: {
     // incomplete/ need routes to correctly create these methods
@@ -245,6 +274,12 @@ export default {
       axios.get("/api/skills/").then((response) => {
         console.log(response.data);
         this.skills_list = response.data;
+      });
+    },
+    showExperiences: function () {
+      axios.get("/api/experiences/").then((response) => {
+        console.log(response.data);
+        this.experiences = response.data;
       });
     },
     createCapstone: function () {
@@ -368,6 +403,10 @@ export default {
           console.log("Success", response.data);
         })
         .catch((error) => console.log(error.response));
+    },
+
+      editExperienceModal: function () {
+      document.querySelector("#experience-details").showModal();
     },
 
     createExperience: function () {
