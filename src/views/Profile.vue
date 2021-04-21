@@ -9,23 +9,15 @@
       <!-- <h3>Last Name</h3> -->
       <p>{{ student.email }}</p>
       <!-- <p>Email</p> -->
-      <p>{{ student.phone }}</p>
+      <p>Phone Number: {{ student.phone }}</p>
       <p>Phone Number:</p>
-      <!-- <p>{{student.photo}}</p> -->
-      <p>Photo:</p>
-      <!-- <p>{{student.bio}}</p> -->
-      <p>Bio:</p>
-      <!-- <p>{{student.linkedin_url}}</p> -->
-      <p>Linkedin URL:</p>
-      <!-- <p>{{student.twitter_handle}}</p> -->
-      <p>Twitter:</p>
-      <!-- <p>{{student.website_url}}</p> -->
-      <p>Website:</p>
-      <!-- <p>{{student.resume_url}}</p> -->
-      <p>Resume:</p>
-      <!-- <p>{{student.github_url}}</p> -->
-      <p>Github:</p>
-      <!-- <p>{{student.bio}}</p> -->
+      <p>Profile Photo: {{ student.photo }}</p>
+      <p>Bio: {{ student.bio }}</p>
+      <p>Linked-In: {{ student.linkedin_url }}</p>
+      <p>Twitter: {{ student.twitter_handle }}</p>
+      <p>Website: {{ student.website_url }}</p>
+      <p>Resume: {{ student.resume_url }}</p>
+      <p>Github {{ student.github_url }}</p>
       <button type="button" v-on:click="editStudentModal">Edit</button>
       <dialog id="student-details">
         <form method="dialog">
@@ -81,6 +73,39 @@
     </div>
 
     <div id="student-experiences">
+      <h3>Experience:</h3>
+      <div id="experiences-list" v-for="experience in experiences" :key="experience.id">
+        <h4>{{ experience.company_name }}</h4>
+
+        <button v-on:click="createWindow">Add Experience</button>
+        <dialog id="create-experience-window">
+          <form method="dialog">
+            <h1>New Experience</h1>
+            <div class="form-group">
+              <label>Start Date:</label>
+              <input type="text" class="form-control" v-model="experiences.startDate" />
+            </div>
+            <div class="form-group">
+              <label>End Date:</label>
+              <input type="text" class="form-control" v-model="experiences.endDate" />
+            </div>
+            <div class="form-group">
+              <label>Job Title:</label>
+              <input type="text" class="form-control" v-model="experiences.jobTitle" />
+            </div>
+            <div class="form-group">
+              <label>Company Name:</label>
+              <input type="text" class="form-control" v-model="experiences.company_name" />
+            </div>
+            <div class="form-group">
+              <label>Details:</label>
+              <input type="text" class="form-control" v-model="experiences.details" />
+            </div>
+            <button v-on:click="createExperience()">Submit</button>
+            <button>close</button>
+          </form>
+        </dialog>
+      </div>
       <button v-on:click="createWindow">Add Experience</button>
       <dialog id="create-experience-window">
         <form method="dialog">
@@ -109,20 +134,50 @@
           <button>close</button>
         </form>
       </dialog>
+      <button type="button" v-on:click="editExperienceModal">Edit</button>
+      <dialog id="experience-details">
+        <form method="dialog">
+          <h1>Edit Your Experience</h1>
+          <p>
+            Start Date:
+            <input type="text" v-model="experience.start_date" />
+          </p>
+          <p>
+            End Date:
+            <input type="text" v-model="experience.end_date" />
+          </p>
+          <p>
+            Job Title:
+            <input type="text" v-model="experience.job_title" />
+          </p>
+          <p>
+            Company Name:
+            <input type="text" v-model="experience.company_name" />
+          </p>
+          <p>
+            Details:
+            <input type="text" v-model="experience.details" />
+          </p>
+          <button v-on:click="updateExperience(experience)">Update</button>
+          <button v-on:click="destroyExperience(experience)">Delete</button>
+          <button>Close</button>
+        </form>
+      </dialog>
     </div>
 
     <div class="student-education">
+<h3>Education:</h3>
       <button v-on:click="showEducation()">Add Education</button>
       <dialog id="education-details">
         <form method="dialog">
           <h1>Education Experience</h1>
           <div class="form-group">
             <label>Start Date:</label>
-            <input type="text" class="form-control" v-model="start" />
+            <input type="text" class="form-control" v-model="start_date" />
           </div>
           <div class="form-group">
             <label>End Date:</label>
-            <input type="text" class="form-control" v-model="end" />
+            <input type="text" class="form-control" v-model="end_date" />
           </div>
           <div class="form-group">
             <label>Degree:</label>
@@ -143,10 +198,11 @@
     </div>
 
     <div id="student-capstone">
+      <h3>Capstones:</h3>
       <button v-on:click="createCapstoneWindow">Add Capstone</button>
       <dialog id="create-capstone-window">
         <h3>Capstone:</h3>
-        <form v-on:submit.prevent="createCapstone()">
+        <form method="dialog">
           <div class="form-group">
             <label>Name:</label>
             <input type="text" class="form-control" v-model="name" />
@@ -163,6 +219,9 @@
             <label>Screenshot:</label>
             <input type="text" class="form-control" v-model="screenshot" />
           </div>
+          <button v-on:click="createCapstone()">Submit</button>
+          <button v-on:click="updateCapstone()">Update</button>
+          <button>close</button>
         </form>
       </dialog>
     </div>
@@ -203,8 +262,8 @@ export default {
         details: "",
       },
       // education experience data
-      start: "",
-      end: "",
+      start_date: "",
+      end_date: "",
       degree: "",
       university: "",
       details: "",
@@ -215,7 +274,8 @@ export default {
       skills_list: [],
       new_skill: "",
       errors: [],
-
+      education_list: [],
+      capstones_list: [],
       // each variable above will need data here!
     };
   },
@@ -228,6 +288,10 @@ export default {
   mounted: function () {
     this.showStudent();
     this.showSkills();
+
+    this.showEducations();
+    this.showCapstones();
+    this.showExperiences();
   },
   methods: {
     // incomplete/ need routes to correctly create these methods
@@ -244,6 +308,25 @@ export default {
         this.skills_list = response.data;
       });
     },
+    showEducations: function () {
+      axios.get("/api/education/").then((response) => {
+        console.log(response.data);
+        this.education_list = response.data;
+      });
+    },
+    showCapstones: function () {
+      axios.get("/api/capstones/").then((response) => {
+        console.log(response.data);
+        this.capstones_list = response.data;
+      });
+    },
+    showExperiences: function () {
+      axios.get("/api/experiences/").then((response) => {
+        console.log(response.data);
+        this.experiences = response.data;
+      });
+    },
+  },
     createCapstone: function () {
       console.log("Creating your capstone info!");
       var params = {
@@ -253,9 +336,9 @@ export default {
         screenshot: this.screenshot,
       };
       axios
-        .post("/api/profile/" + this.student.id, params)
+        .post("/api/capstone/" + this.student.id, params)
         .then(() => {
-          this.$router.push("/profile");
+          // this.$router.push("/profile");
         })
         .catch((error) => console.log(error.response));
     },
@@ -268,14 +351,14 @@ export default {
         screenshot: capstone.screenshot,
       };
       axios
-        .patch("/api/students/" + this.student.id, params)
+        .patch("/api/capstone/" + this.student.id, params)
         .then(() => {
           // this.$router.push("/capstones/" + this.capstone.id);
         })
         .catch((error) => console.log(error.response));
     },
     destroyCapstone: function (capstone) {
-      axios.delete("/api/students/" + capstone.id).then(() => {
+      axios.delete("/api/capstone/" + capstone.id).then(() => {
         console.log("Destroyed");
         // this.$router.push("/students");
       });
@@ -365,6 +448,10 @@ export default {
           console.log("Success", response.data);
         })
         .catch((error) => console.log(error.response));
+    },
+
+      editExperienceModal: function () {
+      document.querySelector("#experience-details").showModal();
     },
 
     createExperience: function () {
