@@ -106,6 +106,62 @@
           </form>
         </dialog>
       </div>
+      <button v-on:click="createWindow">Add Experience</button>
+      <dialog id="create-experience-window">
+        <form method="dialog">
+          <h1>New Experience</h1>
+          <div class="form-group">
+            <label>Start Date:</label>
+            <input type="text" class="form-control" v-model="experiences.start_date" />
+          </div>
+          <div class="form-group">
+            <label>End Date:</label>
+            <input type="text" class="form-control" v-model="experiences.end_date" />
+          </div>
+          <div class="form-group">
+            <label>Job Title:</label>
+            <input type="text" class="form-control" v-model="experiences.job_title" />
+          </div>
+          <div class="form-group">
+            <label>Company Name:</label>
+            <input type="text" class="form-control" v-model="experiences.company_name" />
+          </div>
+          <div class="form-group">
+            <label>Details:</label>
+            <input type="text" class="form-control" v-model="experiences.details" />
+          </div>
+          <button v-on:click="createExperience()">Submit</button>
+          <button>close</button>
+        </form>
+      </dialog>
+      <button type="button" v-on:click="editExperienceModal">Edit</button>
+      <dialog id="experience-details">
+        <form method="dialog">
+          <h1>Edit Your Experience</h1>
+          <p>
+            Start Date:
+            <input type="text" v-model="experience.start_date" />
+          </p>
+          <p>
+            End Date:
+            <input type="text" v-model="experience.end_date" />
+          </p>
+          <p>
+            Job Title:
+            <input type="text" v-model="experience.job_title" />
+          </p>
+          <p>
+            Company Name:
+            <input type="text" v-model="experience.company_name" />
+          </p>
+          <p>
+            Details:
+            <input type="text" v-model="experience.details" />
+          </p>
+          <button v-on:click="updateExperience(experience)">Update</button>
+          <button>Close</button>
+        </form>
+      </dialog>
     </div>
 
     <div class="student-education">
@@ -145,7 +201,7 @@
       <button v-on:click="createCapstoneWindow">Add Capstone</button>
       <dialog id="create-capstone-window">
         <h3>Capstone:</h3>
-        <form v-on:submit.prevent="createCapstone()">
+        <form method="dialog">
           <div class="form-group">
             <label>Name:</label>
             <input type="text" class="form-control" v-model="name" />
@@ -162,6 +218,9 @@
             <label>Screenshot:</label>
             <input type="text" class="form-control" v-model="screenshot" />
           </div>
+          <button v-on:click="createCapstone()">Submit</button>
+          <button v-on:click="updateCapstone()">Update</button>
+          <button>close</button>
         </form>
       </dialog>
     </div>
@@ -231,6 +290,7 @@ export default {
 
     this.showEducations();
     this.showCapstones();
+    this.showExperiences();
   },
   methods: {
     // incomplete/ need routes to correctly create these methods
@@ -259,6 +319,13 @@ export default {
         this.capstones_list = response.data;
       });
     },
+    showExperiences: function () {
+      axios.get("/api/experiences/").then((response) => {
+        console.log(response.data);
+        this.experiences = response.data;
+      });
+    },
+  },
     createCapstone: function () {
       console.log("Creating your capstone info!");
       var params = {
@@ -268,9 +335,9 @@ export default {
         screenshot: this.screenshot,
       };
       axios
-        .post("/api/profile/" + this.student.id, params)
+        .post("/api/capstone/" + this.student.id, params)
         .then(() => {
-          this.$router.push("/profile");
+          // this.$router.push("/profile");
         })
         .catch((error) => console.log(error.response));
     },
@@ -283,14 +350,14 @@ export default {
         screenshot: capstone.screenshot,
       };
       axios
-        .patch("/api/students/" + this.student.id, params)
+        .patch("/api/capstone/" + this.student.id, params)
         .then(() => {
           // this.$router.push("/capstones/" + this.capstone.id);
         })
         .catch((error) => console.log(error.response));
     },
     destroyCapstone: function (capstone) {
-      axios.delete("/api/students/" + capstone.id).then(() => {
+      axios.delete("/api/capstone/" + capstone.id).then(() => {
         console.log("Destroyed");
         // this.$router.push("/students");
       });
@@ -380,6 +447,10 @@ export default {
           console.log("Success", response.data);
         })
         .catch((error) => console.log(error.response));
+    },
+
+      editExperienceModal: function () {
+      document.querySelector("#experience-details").showModal();
     },
 
     createExperience: function () {
