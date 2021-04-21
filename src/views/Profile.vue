@@ -89,64 +89,6 @@
         </p>
         <p>{{ experience.details }}</p>
         <button type="button" v-on:click="editExperienceModal">Edit</button>
-        <dialog id="experience-details">
-          <form method="dialog">
-            <h1>Edit Your Experience</h1>
-            <p>
-              Start Date:
-              <input type="text" v-model="experience.start_date" />
-            </p>
-            <p>
-              End Date:
-              <input type="text" v-model="experience.end_date" />
-            </p>
-            <p>
-              Job Title:
-              <input type="text" v-model="experience.job_title" />
-            </p>
-            <p>
-              Company Name:
-              <input type="text" v-model="experience.company_name" />
-            </p>
-            <p>
-              Details:
-              <input type="text" v-model="experience.details" />
-            </p>
-            <button v-on:click="updateExperience(experience)">Update</button>
-            <button v-on:click="destroyExperience(experience)">Delete</button>
-            <button>Close</button>
-          </form>
-        </dialog>
-      </div>
-      <button v-on:click="createWindow">Add Experience</button>
-      <dialog id="create-experience-window">
-        <form method="dialog">
-          <h1>New Experience</h1>
-          <div class="form-group">
-            <label>Start Date:</label>
-            <input type="text" class="form-control" v-model="experiences.startDate" />
-          </div>
-          <div class="form-group">
-            <label>End Date:</label>
-            <input type="text" class="form-control" v-model="experiences.endDate" />
-          </div>
-          <div class="form-group">
-            <label>Job Title:</label>
-            <input type="text" class="form-control" v-model="experiences.jobTitle" />
-          </div>
-          <div class="form-group">
-            <label>Company Name:</label>
-            <input type="text" class="form-control" v-model="experiences.companyName" />
-          </div>
-          <div class="form-group">
-            <label>Details:</label>
-            <input type="text" class="form-control" v-model="experiences.details" />
-          </div>
-          <button v-on:click="createExperience()">Submit</button>
-          <button>close</button>
-        </form>
-      </dialog>
-      <button type="button" v-on:click="editExperienceModal">Edit</button>
       <dialog id="experience-details">
         <form method="dialog">
           <h1>Edit Your Experience</h1>
@@ -175,6 +117,36 @@
           <button>Close</button>
         </form>
       </dialog>
+      </div>
+      <button v-on:click="createWindow">Add Experience</button>
+      <dialog id="create-experience-window">
+        <form method="dialog">
+          <h1>New Experience</h1>
+          <div class="form-group">
+            <label>Start Date:</label>
+            <input type="text" class="form-control" v-model="experiences.start_date" />
+          </div>
+          <div class="form-group">
+            <label>End Date:</label>
+            <input type="text" class="form-control" v-model="experiences.end_date" />
+          </div>
+          <div class="form-group">
+            <label>Job Title:</label>
+            <input type="text" class="form-control" v-model="experiences.job_title" />
+          </div>
+          <div class="form-group">
+            <label>Company Name:</label>
+            <input type="text" class="form-control" v-model="experiences.company_name" />
+          </div>
+          <div class="form-group">
+            <label>Details:</label>
+            <input type="text" class="form-control" v-model="experiences.details" />
+          </div>
+          <button v-on:click="createExperience()">Submit</button>
+          <button>close</button>
+        </form>
+      </dialog>
+      
     </div>
 
     <div class="student-education">
@@ -193,11 +165,11 @@
           <h1>Education</h1>
           <div class="form-group">
             <label>Start Date:</label>
-            <input type="text" class="form-control" v-model="start" />
+            <input type="text" class="form-control" v-model="start_date" />
           </div>
           <div class="form-group">
             <label>End Date:</label>
-            <input type="text" class="form-control" v-model="end" />
+            <input type="text" class="form-control" v-model="end_date" />
           </div>
           <div class="form-group">
             <label>Degree:</label>
@@ -312,16 +284,16 @@ export default {
       url: "",
       screenshot: "",
       experiences: {
-        startDate: "",
-        endDate: "",
-        jobTitle: "",
-        companyName: "",
+        start_date: "",
+        end_date: "",
+        job_title: "",
+        company_name: "",
         details: "",
       },
       currentExperience: {},
       // education experience data
-      start: "",
-      end: "",
+      start_date: "",
+      end_date: "",
       degree: "",
       university: "",
       details: "",
@@ -463,10 +435,10 @@ export default {
       document.querySelector("#student-details").showModal();
     },
     createEducation: function () {
-      console.log("Creating Eduction info");
+      console.log("Creating Education info");
       var params = {
-        startDate: this.startDate,
-        endDate: this.endDate,
+        startDate: this.start_date,
+        endDate: this.end_date,
         degree: this.degree,
         university: this.university,
         details: this.details,
@@ -485,14 +457,14 @@ export default {
     updateEducation: function (education) {
       console.log("Updating Eduction info");
       var params = {
-        startDate: this.startDate,
-        endDate: this.endDate,
+        startDate: this.start_date,
+        endDate: this.end_date,
         degree: this.degree,
         university: this.university,
         details: this.details,
       };
       axios
-        .patch("/api/eduction" + education.id, params)
+        .patch("/api/education" + education.id, params)
         .then((response) => {
           console.log("Success", response.data);
         })
@@ -506,10 +478,10 @@ export default {
     createExperience: function () {
       console.log("Creating an experience");
       var params = {
-        startDate: this.startDate,
-        endDate: this.endDate,
-        jobTitle: this.jobTitle,
-        companyName: this.companyName,
+        startDate: this.start_date,
+        endDate: this.end_date,
+        jobTitle: this.job_title,
+        companyName: this.company_name,
         details: this.details,
       };
       axios.post("/api/profile", params).then(() => {
@@ -521,10 +493,10 @@ export default {
     },
     updateExperience: function (experience) {
       var params = {
-        startDate: experience.startDate,
-        endDate: experience.endDate,
-        jobTitle: experience.jobTitle,
-        companyName: experience.companyName,
+        startDate: experience.start_date,
+        endDate: experience.end_date,
+        jobTitle: experience.job_title,
+        companyName: experience.company_name,
         details: experience.details,
       };
       axios.patch("/api/experiences/" + experience.id, params).then((response) => {
