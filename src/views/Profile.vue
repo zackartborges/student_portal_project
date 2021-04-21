@@ -3,13 +3,13 @@
     <div id="student-data">
       <!-- v-for/v-bind image link {{student.photo}}-->
       <img src="" alt="" />
-      <!-- <h1>{{student.first_name}}</h1> -->
-      <h3>First Name</h3>
-      <!-- <h3>{{student.last_name}}</h3> -->
-      <h3>Last Name</h3>
-      <!-- <p>{{student.email}}</p> -->
-      <p>Email</p>
-      <!-- <p>{{student.phone}}</p> -->
+      <h3>{{ student.first_name }} {{ student.last_name }}</h3>
+      <!-- <h3>First Name</h3> -->
+      <h3></h3>
+      <!-- <h3>Last Name</h3> -->
+      <p>{{ student.email }}</p>
+      <!-- <p>Email</p> -->
+      <p>{{ student.phone }}</p>
       <p>Phone Number:</p>
       <!-- <p>{{student.photo}}</p> -->
       <p>Photo:</p>
@@ -87,23 +87,23 @@
           <h1>New Experience</h1>
           <div class="form-group">
             <label>Start Date:</label>
-            <input type="text" class="form-control" v-model="startDate" />
+            <input type="text" class="form-control" v-model="experiences.startDate" />
           </div>
           <div class="form-group">
             <label>End Date:</label>
-            <input type="text" class="form-control" v-model="endDate" />
+            <input type="text" class="form-control" v-model="experiences.endDate" />
           </div>
           <div class="form-group">
             <label>Job Title:</label>
-            <input type="text" class="form-control" v-model="jobTitle" />
+            <input type="text" class="form-control" v-model="experiences.jobTitle" />
           </div>
           <div class="form-group">
             <label>Company Name:</label>
-            <input type="text" class="form-control" v-model="companyName" />
+            <input type="text" class="form-control" v-model="experiences.companyName" />
           </div>
           <div class="form-group">
             <label>Details:</label>
-            <input type="text" class="form-control" v-model="details" />
+            <input type="text" class="form-control" v-model="experiences.details" />
           </div>
           <button v-on:click="createExperience()">Submit</button>
           <button>close</button>
@@ -149,10 +149,10 @@
         <input v-model="new_skill" type="text" id="skill-input" placeholder="CRUD Apps, Ruby, etc.¸" />
         <button type="submit">Add Skill</button>
       </form>
-      <div id="skills-list" v-for="skill in skills_list" :key="skill">
+      <div id="skills-list" v-for="skill in orderdSkills" :key="skill.id">
         <ul>
           <li>
-            {{ skill }}
+            {{ skill.name }}
             <button v-on:click="destroySkill(skill)">Delete</button>
           </li>
         </ul>
@@ -169,6 +169,7 @@ export default {
   data: function () {
     return {
       student: {},
+      skills: {},
       experiences: {
         startDate: "",
         endDate: "",
@@ -186,23 +187,36 @@ export default {
       description: "",
       url: "",
       screenshot: "",
-      skills_list: [],
+      skills_list: ["alphabet", "soup"],
       new_skill: "",
       errors: [],
 
       // each variable above will need data here!
     };
   },
+  computed: {
+    orderdSkills: function () {
+      var skills_array = this.skills_list;
+      return skills_array.sort((a, b) => (a.name > b.name ? 1 : -1));
+    },
+  },
   mounted: function () {
     this.showStudent();
+    this.showSkills();
   },
   methods: {
     // incomplete/ need routes to correctly create these methods
 
     showStudent: function () {
-      axios.get("/api/students/" + this.student.id).then((response) => {
+      axios.get("/api/students/" + this.$route.params.id).then((response) => {
         console.log(response.data);
         this.student = response.data;
+      });
+    },
+    showSkills: function () {
+      axios.get("/api/skills/").then((response) => {
+        console.log(response.data);
+        this.skills_list = response.data;
       });
     },
     createCapstone: function () {
@@ -242,34 +256,34 @@ export default {
       });
     },
     createSkill() {
-      // var params = {
-      //   skill: this.new_skill,
-      // };
-      // axios
-      //   .post("/api/skills", params)
-      //   .then((response) => {
-      //     console.log("skill being added...", response.data);
-      //     this.skills_list.push(response.data);
-      //   })
-      //   .catch((error) => {
-      //     console.log(error.response);
-      //     this.errors = error.response.data.errors;
-      //   });
-      console.log("skill being added...");
-      this.skills_list.unshift(this.new_skill);
+      var params = {
+        skill_name: this.new_skill,
+      };
+      axios
+        .post("/api/skills", params)
+        .then((response) => {
+          console.log("skill being added...", response.data);
+          this.skills_list.unshift(response.data);
+        })
+        .catch((error) => {
+          console.log(error.response);
+          this.errors = error.response.data.errors;
+        });
       this.new_skill = "";
+      // console.log(`"${this.new_skill} being added..."`);
+      // this.skills_list.unshift(this.new_skill);
+      // this.new_skill = "";
     },
     destroySkill(skill) {
-      // axios.delete("/api/skills/" + skill.id).then((response) => {
-      //   console.log("skill being deleted...", response.data);
-      //   var index = this.skills_list.indexOf(skill);
-      //   this.skills_list.splice(index, 1);
-      // });
-      console.log("skill being deleted...");
-      var index = this.skills_list.indexOf(skill);
-      this.skills_list.splice(index, 1);
+      axios.delete("/api/skills/" + skill.id).then((response) => {
+        console.log("skill being deleted...", response.data);
+        var index = this.skills_list.indexOf(skill);
+        this.skills_list.splice(index, 1);
+      });
+      // console.log("skill being deleted...");
+      // var index = this.skills_list.indexOf(skill);
+      // this.skills_list.splice(index, 1);
     },
-
     updateStudent: function (student) {
       let params = {
         first_name: student.first_name,
@@ -284,7 +298,7 @@ export default {
         github_url: student.github_url,
         photo: student.photo,
       };
-      axios.patch("/api/students" + student.id, params).then((response) => {
+      axios.patch("/api/students/" + student.id, params).then((response) => {
         console.log("Success!", response.data);
       });
     },
