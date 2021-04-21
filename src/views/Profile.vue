@@ -174,7 +174,7 @@
       <button v-on:click="createCapstoneWindow">Add Capstone</button>
       <dialog id="create-capstone-window">
         <h3>Capstone:</h3>
-        <form v-on:submit.prevent="createCapstone()">
+        <form method="dialog">
           <div class="form-group">
             <label>Name:</label>
             <input type="text" class="form-control" v-model="name" />
@@ -191,6 +191,9 @@
             <label>Screenshot:</label>
             <input type="text" class="form-control" v-model="screenshot" />
           </div>
+          <button v-on:click="createCapstone()">Submit</button>
+          <button v-on:click="updateCapstone()">Update</button>
+          <button>close</button>
         </form>
       </dialog>
     </div>
@@ -288,9 +291,9 @@ export default {
         screenshot: this.screenshot,
       };
       axios
-        .post("/api/profile/" + this.student.id, params)
+        .post("/api/capstone/" + this.student.id, params)
         .then(() => {
-          this.$router.push("/profile");
+          // this.$router.push("/profile");
         })
         .catch((error) => console.log(error.response));
     },
@@ -303,14 +306,14 @@ export default {
         screenshot: capstone.screenshot,
       };
       axios
-        .patch("/api/students/" + this.student.id, params)
+        .patch("/api/capstone/" + this.student.id, params)
         .then(() => {
           // this.$router.push("/capstones/" + this.capstone.id);
         })
         .catch((error) => console.log(error.response));
     },
     destroyCapstone: function (capstone) {
-      axios.delete("/api/students/" + capstone.id).then(() => {
+      axios.delete("/api/capstone/" + capstone.id).then(() => {
         console.log("Destroyed");
         // this.$router.push("/students");
       });
