@@ -146,6 +146,35 @@
           <button>close</button>
         </form>
       </dialog>
+      <button type="button" v-on:click="editExperienceModal">Edit</button>
+      <dialog id="experience-details">
+        <form method="dialog">
+          <h1>Edit Your Experience</h1>
+          <p>
+            Start Date:
+            <input type="text" v-model="currentExperience.start_date" />
+          </p>
+          <p>
+            End Date:
+            <input type="text" v-model="currentExperience.end_date" />
+          </p>
+          <p>
+            Job Title:
+            <input type="text" v-model="currentExperience.job_title" />
+          </p>
+          <p>
+            Company Name:
+            <input type="text" v-model="currentExperience.company_name" />
+          </p>
+          <p>
+            Details:
+            <input type="text" v-model="currentExperience.details" />
+          </p>
+          <button v-on:click="updateExperience(currentExperience)">Update</button>
+          <button v-on:click="destroyExperience(currentExperience)">Delete</button>
+          <button>Close</button>
+        </form>
+      </dialog>
     </div>
 
     <div class="student-education">
@@ -289,6 +318,7 @@ export default {
         companyName: "",
         details: "",
       },
+      currentExperience: {},
       // education experience data
       start: "",
       end: "",
@@ -507,6 +537,11 @@ export default {
         var index = this.experiences.indexOf(experience);
         this.experiences.splice(index, 1);
       });
+    },
+    targetExperience: function (experience) {
+      console.log(experience);
+      this.currentExperience = experience;
+      document.querySelector("#experience-details").showModal();
     },
     createCapstoneWindow: function () {
       document.querySelector("#create-capstone-window").showModal();
