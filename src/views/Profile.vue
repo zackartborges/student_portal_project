@@ -112,7 +112,7 @@
     </div>
 
     <div class="student-education">
-      <button v-on:click="showEducation()">Education Input</button>
+      <button v-on:click="showEducation()">Add Education</button>
       <dialog id="education-details">
         <form method="dialog">
           <h1>Education Experience</h1>
@@ -136,7 +136,7 @@
             <label>Details:</label>
             <input type="text" class="form-control" v-model="details" />
           </div>
-          <input type="submit" class="btn btn-primary" value="Submit" />
+          <button v-on:click="createEducation()">Submit</button>
           <button>Close</button>
         </form>
       </dialog>
@@ -177,8 +177,8 @@ export default {
         details: "",
       },
       // education experience data
-      start: "",
-      end: "",
+      start_date: "",
+      end_date: "",
       degree: "",
       university: "",
       details: "",
@@ -188,13 +188,13 @@ export default {
       screenshot: "",
       skills_list: [],
       new_skill: "",
-      errors: [],
 
       // each variable above will need data here!
     };
   },
   mounted: function () {
     this.showStudent();
+    this.EducationIndex();
   },
   methods: {
     // incomplete/ need routes to correctly create these methods
@@ -294,19 +294,15 @@ export default {
     createEducation: function () {
       console.log("Creating Eduction info");
       var params = {
-        startDate: this.startDate,
-        endDate: this.endDate,
+        start_date: this.start_date,
+        end_date: this.end_date,
         degree: this.degree,
         university: this.university,
         details: this.details,
       };
-      axios
-        .post("/api/education", params)
-        .then((response) => {
-          console.log(response.data);
-          this.education.push(response.data);
-        })
-        .catch((error) => console.log(error.response));
+      axios.post("/api/education", params).then((response) => {
+        console.log("Created", response.data);
+      });
     },
     showEducation: function () {
       document.querySelector("#education-details").showModal();
@@ -314,19 +310,25 @@ export default {
     updateEducation: function (education) {
       console.log("Updating Eduction info");
       var params = {
-        startDate: this.startDate,
-        endDate: this.endDate,
+        start_date: this.start_date,
+        end_date: this.end_date,
         degree: this.degree,
         university: this.university,
         details: this.details,
       };
-      axios
-        .patch("/api/eduction" + education.id, params)
-        .then((response) => {
-          console.log("Success", response.data);
-        })
-        .catch((error) => console.log(error.response));
+      axios.patch("/api/education/:id" + education.id, params).then((response) => {
+        console.log("Success", response.data);
+      });
     },
+    methods: {
+      EducationIndex: function () {
+        axios.get("/api/education").then((response) => {
+          this.educations = response.data;
+          console.log("all education:", this.educations);
+        });
+      },
+    },
+
     createExperience: function () {
       console.log("Creating an experience");
       var params = {
@@ -336,7 +338,7 @@ export default {
         companyName: this.companyName,
         details: this.details,
       };
-      axios.post("/api/profile", params).then(() => {
+      axios.post("/api/education", params).then(() => {
         this.$router.push("/profile");
       });
     },
