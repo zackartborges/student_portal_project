@@ -9,15 +9,23 @@
       <!-- <h3>Last Name</h3> -->
       <p>{{ student.email }}</p>
       <!-- <p>Email</p> -->
-      <p>Phone Number: {{ student.phone }}</p>
+      <p>{{ student.phone }}</p>
       <p>Phone Number:</p>
-      <p>Profile Photo: {{ student.photo }}</p>
-      <p>Bio: {{ student.bio }}</p>
-      <p>Linked-In: {{ student.linkedin_url }}</p>
-      <p>Twitter: {{ student.twitter_handle }}</p>
-      <p>Website: {{ student.website_url }}</p>
-      <p>Resume: {{ student.resume_url }}</p>
-      <p>Github {{ student.github_url }}</p>
+      <!-- <p>{{student.photo}}</p> -->
+      <p>Photo:</p>
+      <!-- <p>{{student.bio}}</p> -->
+      <p>Bio:</p>
+      <!-- <p>{{student.linkedin_url}}</p> -->
+      <p>Linkedin URL:</p>
+      <!-- <p>{{student.twitter_handle}}</p> -->
+      <p>Twitter:</p>
+      <!-- <p>{{student.website_url}}</p> -->
+      <p>Website:</p>
+      <!-- <p>{{student.resume_url}}</p> -->
+      <p>Resume:</p>
+      <!-- <p>{{student.github_url}}</p> -->
+      <p>Github:</p>
+      <!-- <p>{{student.bio}}</p> -->
       <button type="button" v-on:click="editStudentModal">Edit</button>
       <dialog id="student-details">
         <form method="dialog">
@@ -116,19 +124,19 @@
           <h1>New Experience</h1>
           <div class="form-group">
             <label>Start Date:</label>
-            <input type="text" class="form-control" v-model="experiences.start_date" />
+            <input type="text" class="form-control" v-model="experiences.startDate" />
           </div>
           <div class="form-group">
             <label>End Date:</label>
-            <input type="text" class="form-control" v-model="experiences.end_date" />
+            <input type="text" class="form-control" v-model="experiences.endDate" />
           </div>
           <div class="form-group">
             <label>Job Title:</label>
-            <input type="text" class="form-control" v-model="experiences.job_title" />
+            <input type="text" class="form-control" v-model="experiences.jobTitle" />
           </div>
           <div class="form-group">
             <label>Company Name:</label>
-            <input type="text" class="form-control" v-model="experiences.company_name" />
+            <input type="text" class="form-control" v-model="experiences.companyName" />
           </div>
           <div class="form-group">
             <label>Details:</label>
@@ -141,6 +149,7 @@
     </div>
 
     <div class="student-education">
+      <button v-on:click="showEducation()">Education Input</button>
       <h3>Education:</h3>
       <div v-for="education in education_lists" :key="education.id">
         <h3>{{ education.university }} | {{ education.degree }}</h3>
@@ -155,11 +164,11 @@
           <h1>Education</h1>
           <div class="form-group">
             <label>Start Date:</label>
-            <input type="text" class="form-control" v-model="start_date" />
+            <input type="text" class="form-control" v-model="start" />
           </div>
           <div class="form-group">
             <label>End Date:</label>
-            <input type="text" class="form-control" v-model="end_date" />
+            <input type="text" class="form-control" v-model="end" />
           </div>
           <div class="form-group">
             <label>Degree:</label>
@@ -173,14 +182,13 @@
             <label>Details:</label>
             <input type="text" class="form-control" v-model="details" />
           </div>
-          <button v-on:click="createEducation()">Submit</button>
+          <input type="submit" class="btn btn-primary" value="Submit" />
           <button>Close</button>
         </form>
       </dialog>
     </div>
 
     <div id="student-capstone">
-      <h3>Capstones:</h3>
       <button v-on:click="createCapstoneWindow">Add Capstone</button>
       <dialog id="create-capstone-window">
         <h3>Capstone:</h3>
@@ -202,16 +210,49 @@
             <input type="text" class="form-control" v-model="screenshot" />
           </div>
           <button v-on:click="createCapstone()">Submit</button>
-          <button v-on:click="updateCapstone()">Update</button>
           <button>close</button>
         </form>
       </dialog>
+      <div id="capstone-list" v-for="capstone in capstones" :key="capstone.id">
+        <ul>
+          <li>
+            {{ capstone.name }}
+          </li>
+          <button v-on:click="destroyCapstone(capstone)"></button>
+        </ul>
+        <!-- Capstone edit dialog and button -->
+        <button v-on:click="editCapstoneWindow">Edit Capstone</button>
+        <dialog id="edit-capstone-window">
+          <h3>Edit Capstone:</h3>
+          <form method="dialog">
+            <div class="form-group">
+              <label>Name:</label>
+              <input type="text" class="form-control" v-model="name" />
+            </div>
+            <div class="form-group">
+              <label>Description:</label>
+              <input type="text" class="form-control" v-model="description" />
+            </div>
+            <div class="form-group">
+              <label>URL:</label>
+              <input type="text" class="form-control" v-model="url" />
+            </div>
+            <div class="form-group">
+              <label>Screenshot:</label>
+              <input type="text" class="form-control" v-model="screenshot" />
+            </div>
+
+            <button v-on:click="updateCapstone()">Update</button>
+            <button>close</button>
+          </form>
+        </dialog>
+      </div>
     </div>
 
     <div id="student-skills">
       <h3>Skills:</h3>
       <form v-on:submit.prevent="createSkills()">
-        <input v-model="new_skill" type="text" id="skill-input" placeholder="CRUD Apps, Ruby, etc.¸" />
+        <input v-model="new_s" type="text" id="skill-input" placeholder="CRUD Apps, Ruby, etc.¸" />
         <button type="submit">Add Skill</button>
       </form>
       <div id="skills-list" v-for="skill in orderdSkills" :key="skill.id">
@@ -236,28 +277,29 @@ export default {
     return {
       student: {},
       skills: {},
-      experiences: {
-        start_date: "",
-        end_date: "",
-        job_title: "",
-        company_name: "",
-        details: "",
-      },
-      // education experience data
-      start_date: "",
-      end_date: "",
-      degree: "",
-      university: "",
-      details: "",
+      capstones: {},
       name: "",
       description: "",
       url: "",
       screenshot: "",
-      skills_list: [],
+      experiences: {
+        startDate: "",
+        endDate: "",
+        jobTitle: "",
+        companyName: "",
+        details: "",
+      },
+      // education experience data
+      start: "",
+      end: "",
+      degree: "",
+      university: "",
+      details: "",
+
+      skills_list: ["alphabet", "soup"],
       new_skill: "",
       errors: [],
-      education_list: [],
-      capstones_list: [],
+
       // each variable above will need data here!
     };
   },
@@ -270,10 +312,6 @@ export default {
   mounted: function () {
     this.showStudent();
     this.showSkills();
-
-    this.showEducations();
-    this.showCapstones();
-    this.showExperiences();
   },
   methods: {
     // incomplete/ need routes to correctly create these methods
@@ -395,10 +433,10 @@ export default {
       document.querySelector("#student-details").showModal();
     },
     createEducation: function () {
-      console.log("Creating Education info");
+      console.log("Creating Eduction info");
       var params = {
-        start_date: this.start_date,
-        end_date: this.end_date,
+        startDate: this.startDate,
+        endDate: this.endDate,
         degree: this.degree,
         university: this.university,
         details: this.details,
@@ -417,14 +455,14 @@ export default {
     updateEducation: function (education) {
       console.log("Updating Eduction info");
       var params = {
-        start_date: this.start_date,
-        end_date: this.end_date,
+        startDate: this.startDate,
+        endDate: this.endDate,
         degree: this.degree,
         university: this.university,
         details: this.details,
       };
       axios
-        .patch("/api/education" + education.id, params)
+        .patch("/api/eduction" + education.id, params)
         .then((response) => {
           console.log("Success", response.data);
         })
@@ -438,14 +476,14 @@ export default {
     createExperience: function () {
       console.log("Creating an experience");
       var params = {
-        start_date: this.experiences.start_date,
-        end_date: this.experiences.end_date,
-        job_title: this.experiences.job_title,
-        company_name: this.experiences.company_name,
-        details: this.experiences.details,
+        startDate: this.startDate,
+        endDate: this.endDate,
+        jobTitle: this.jobTitle,
+        companyName: this.companyName,
+        details: this.details,
       };
-      axios.post("/api/experiences", params).then(() => {
-        // this.$router.push("/profile");
+      axios.post("/api/profile", params).then(() => {
+        this.$router.push("/profile");
       });
     },
     createWindow: function () {
@@ -453,10 +491,10 @@ export default {
     },
     updateExperience: function (experience) {
       var params = {
-        start_date: experience.start_date,
-        end_date: experience.end_date,
-        job_title: experience.job_title,
-        company_name: experience.company_name,
+        startDate: experience.startDate,
+        endDate: experience.endDate,
+        jobTitle: experience.jobTitle,
+        companyName: experience.companyName,
         details: experience.details,
       };
       axios.patch("/api/experiences/" + experience.id, params).then((response) => {
@@ -472,6 +510,9 @@ export default {
     },
     createCapstoneWindow: function () {
       document.querySelector("#create-capstone-window").showModal();
+    },
+    editCapstoneWindow: function () {
+      document.querySelector("#edit-capstone-window").showModal();
     },
   },
 };
