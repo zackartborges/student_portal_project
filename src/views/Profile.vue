@@ -124,19 +124,19 @@
           <h1>New Experience</h1>
           <div class="form-group">
             <label>Start Date:</label>
-            <input type="text" class="form-control" v-model="experiences.startDate" />
+            <input type="text" class="form-control" v-model="experiences.start_date" />
           </div>
           <div class="form-group">
             <label>End Date:</label>
-            <input type="text" class="form-control" v-model="experiences.endDate" />
+            <input type="text" class="form-control" v-model="experiences.end_date" />
           </div>
           <div class="form-group">
             <label>Job Title:</label>
-            <input type="text" class="form-control" v-model="experiences.jobTitle" />
+            <input type="text" class="form-control" v-model="experiences.job_title" />
           </div>
           <div class="form-group">
             <label>Company Name:</label>
-            <input type="text" class="form-control" v-model="experiences.companyName" />
+            <input type="text" class="form-control" v-model="experiences.company_name" />
           </div>
           <div class="form-group">
             <label>Details:</label>
@@ -312,10 +312,10 @@ export default {
       url: "",
       screenshot: "",
       experiences: {
-        startDate: "",
-        endDate: "",
-        jobTitle: "",
-        companyName: "",
+        start_date: "",
+        end_date: "",
+        job_title: "",
+        company_name: "",
         details: "",
       },
       currentExperience: {},
@@ -465,8 +465,8 @@ export default {
     createEducation: function () {
       console.log("Creating Eduction info");
       var params = {
-        startDate: this.startDate,
-        endDate: this.endDate,
+        startDate: this.start_date,
+        endDate: this.end_date,
         degree: this.degree,
         university: this.university,
         details: this.details,
@@ -485,8 +485,8 @@ export default {
     updateEducation: function (education) {
       console.log("Updating Eduction info");
       var params = {
-        startDate: this.startDate,
-        endDate: this.endDate,
+        startDate: this.start_date,
+        endDate: this.endD_date,
         degree: this.degree,
         university: this.university,
         details: this.details,
@@ -506,10 +506,10 @@ export default {
     createExperience: function () {
       console.log("Creating an experience");
       var params = {
-        startDate: this.startDate,
-        endDate: this.endDate,
-        jobTitle: this.jobTitle,
-        companyName: this.companyName,
+        startDate: this.start_date,
+        endDate: this.end_date,
+        jobTitle: this.job_title,
+        companyName: this.company_name,
         details: this.details,
       };
       axios.post("/api/profile", params).then(() => {
@@ -521,10 +521,10 @@ export default {
     },
     updateExperience: function (experience) {
       var params = {
-        startDate: experience.startDate,
-        endDate: experience.endDate,
-        jobTitle: experience.jobTitle,
-        companyName: experience.companyName,
+        startDate: experience.start_date,
+        endDate: experience.end_date,
+        jobTitle: experience.job_title,
+        companyName: experience.company_name,
         details: experience.details,
       };
       axios.patch("/api/experiences/" + experience.id, params).then((response) => {
