@@ -75,6 +75,7 @@
     <div id="student-experiences">
       <h3>Experience:</h3>
       <div id="experiences-list" v-for="experience in experiences" :key="experience.id">
+<<<<<<< HEAD
         <h4>{{ experience.company_name }}| {{ experience.job_title }}</h4>
         <p>
           <strong>{{ experience.start_date }} - {{ experience.end_date }}</strong>
@@ -106,8 +107,66 @@
             </p>
             <button v-on:click="updateExperience(experience)">Update</button>
             <button>Close</button>
+=======
+        <h4>{{ experience.company_name }}</h4>
+        <button type="button" v-on:click="editExperienceModal">Edit</button>
+        <dialog id="experience-details">
+          <form method="dialog">
+            <h1>Edit Your Experience</h1>
+            <p>
+              Start Date:
+              <input type="text" v-model="experiences.start_date" />
+            </p>
+            <p>
+              End Date:
+              <input type="text" v-model="experiences.end_date" />
+            </p>
+            <p>
+              Job Title:
+              <input type="text" v-model="experiences.job_title" />
+            </p>
+            <p>
+              Company Name:
+              <input type="text" v-model="experiences.company_name" />
+            </p>
+            <p>
+              Details:
+              <input type="text" v-model="experiences.details" />
+            </p>
+            <button v-on:click="updateExperience(experience)">Update</button>
+            <button v-on:click="destroyExperience(experience)">Delete</button>
+            <button>Close</button>
           </form>
         </dialog>
+        <!-- <button v-on:click="createWindow">Add Experience</button>
+        <dialog id="create-experience-window">
+          <form method="dialog">
+            <h1>New Experience</h1>
+            <div class="form-group">
+              <label>Start Date:</label>
+              <input type="text" class="form-control" v-model="experiences.startDate" />
+            </div>
+            <div class="form-group">
+              <label>End Date:</label>
+              <input type="text" class="form-control" v-model="experiences.endDate" />
+            </div>
+            <div class="form-group">
+              <label>Job Title:</label>
+              <input type="text" class="form-control" v-model="experiences.jobTitle" />
+            </div>
+            <div class="form-group">
+              <label>Company Name:</label>
+              <input type="text" class="form-control" v-model="experiences.company_name" />
+            </div>
+            <div class="form-group">
+              <label>Details:</label>
+              <input type="text" class="form-control" v-model="experiences.details" />
+            </div>
+            <button v-on:click="createExperience()">Submit</button>
+            <button>close</button>
+>>>>>>> 48edf6356536d974443613c03eaf6a9cb1ec9c2b
+          </form>
+        </dialog> -->
       </div>
       <button v-on:click="createWindow">Add Experience</button>
       <dialog id="create-experience-window">
@@ -172,7 +231,7 @@
             <label>Details:</label>
             <input type="text" class="form-control" v-model="details" />
           </div>
-          <input type="submit" class="btn btn-primary" value="Submit" />
+          <button v-on:click="createEducation()">Submit</button>
           <button>Close</button>
         </form>
       </dialog>
@@ -210,7 +269,7 @@
     <div id="student-skills">
       <h3>Skills:</h3>
       <form v-on:submit.prevent="createSkills()">
-        <input v-model="new_s" type="text" id="skill-input" placeholder="CRUD Apps, Ruby, etc.¸" />
+        <input v-model="new_skill" type="text" id="skill-input" placeholder="CRUD Apps, Ruby, etc.¸" />
         <button type="submit">Add Skill</button>
       </form>
       <div id="skills-list" v-for="skill in orderdSkills" :key="skill.id">
@@ -236,10 +295,10 @@ export default {
       student: {},
       skills: {},
       experiences: {
-        startDate: "",
-        endDate: "",
-        jobTitle: "",
-        companyName: "",
+        start_date: "",
+        end_date: "",
+        job_title: "",
+        company_name: "",
         details: "",
       },
       // education experience data
@@ -252,7 +311,7 @@ export default {
       description: "",
       url: "",
       screenshot: "",
-      skills_list: ["alphabet", "soup"],
+      skills_list: [],
       new_skill: "",
       errors: [],
       education_list: [],
@@ -394,10 +453,10 @@ export default {
       document.querySelector("#student-details").showModal();
     },
     createEducation: function () {
-      console.log("Creating Eduction info");
+      console.log("Creating Education info");
       var params = {
-        startDate: this.startDate,
-        endDate: this.endDate,
+        start_date: this.start_date,
+        end_date: this.end_date,
         degree: this.degree,
         university: this.university,
         details: this.details,
@@ -416,14 +475,14 @@ export default {
     updateEducation: function (education) {
       console.log("Updating Eduction info");
       var params = {
-        startDate: this.startDate,
-        endDate: this.endDate,
+        start_date: this.start_date,
+        end_date: this.end_date,
         degree: this.degree,
         university: this.university,
         details: this.details,
       };
       axios
-        .patch("/api/eduction" + education.id, params)
+        .patch("/api/education" + education.id, params)
         .then((response) => {
           console.log("Success", response.data);
         })
@@ -437,14 +496,14 @@ export default {
     createExperience: function () {
       console.log("Creating an experience");
       var params = {
-        startDate: this.startDate,
-        endDate: this.endDate,
-        jobTitle: this.jobTitle,
-        companyName: this.companyName,
-        details: this.details,
+        start_date: this.experiences.start_date,
+        end_date: this.experiences.end_date,
+        job_title: this.experiences.job_title,
+        company_name: this.experiences.company_name,
+        details: this.experiences.details,
       };
-      axios.post("/api/profile", params).then(() => {
-        this.$router.push("/profile");
+      axios.post("/api/experiences", params).then(() => {
+        // this.$router.push("/profile");
       });
     },
     createWindow: function () {
@@ -452,10 +511,10 @@ export default {
     },
     updateExperience: function (experience) {
       var params = {
-        startDate: experience.startDate,
-        endDate: experience.endDate,
-        jobTitle: experience.jobTitle,
-        companyName: experience.companyName,
+        start_date: experience.start_date,
+        end_date: experience.end_date,
+        job_title: experience.job_title,
+        company_name: experience.company_name,
         details: experience.details,
       };
       axios.patch("/api/experiences/" + experience.id, params).then((response) => {
