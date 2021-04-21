@@ -162,7 +162,6 @@
           <button>close</button>
         </form>
       </dialog>
-<<<<<<< HEAD
       <button type="button" v-on:click="editExperienceModal">Edit</button>
       <dialog id="experience-details">
         <form method="dialog">
@@ -192,8 +191,6 @@
           <button>Close</button>
         </form>
       </dialog>
-=======
->>>>>>> 48edf6356536d974443613c03eaf6a9cb1ec9c2b
     </div>
 
     <div class="student-education">
