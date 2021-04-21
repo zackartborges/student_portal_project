@@ -383,11 +383,11 @@ export default {
     },
     destroyExperience: function (experience) {
       axios.delete("/api/experiences/" + experience.id).then((response) => {
-        conosole.log("Delete Confirmed", response.data);
+        console.log("Delete Confirmed", response.data);
         var index = this.experiences.indexOf(experience);
         this.experiences.splice(index, 1);
       });
-    }
+    },
     createCapstoneWindow: function () {
       document.querySelector("#create-capstone-window").showModal();
     },
