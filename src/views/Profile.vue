@@ -105,6 +105,7 @@
               <input type="text" v-model="experience.details" />
             </p>
             <button v-on:click="updateExperience(experience)">Update</button>
+            <button v-on:click="destroyExperience(experience)">Delete</button>
             <button>Close</button>
           </form>
         </dialog>
