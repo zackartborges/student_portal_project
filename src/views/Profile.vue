@@ -81,6 +81,43 @@
     </div>
 
     <div id="student-experiences">
+      <h3>Experience:</h3>
+      <div id="experiences-list" v-for="experience in experiences" :key="experience.id">
+        <h4>{{ experience.company_name }}| {{ experience.job_title }}</h4>
+        <p>
+          <strong>{{ experience.start_date }} - {{ experience.end_date }}</strong>
+        </p>
+        <p>{{ experience.details }}</p>
+        <button type="button" v-on:click="editExperienceModal">Edit</button>
+        <dialog id="experience-details">
+          <form method="dialog">
+            <h1>Edit Your Experience</h1>
+            <p>
+              Start Date:
+              <input type="text" v-model="experience.start_date" />
+            </p>
+            <p>
+              End Date:
+              <input type="text" v-model="experience.end_date" />
+            </p>
+            <p>
+              Job Title:
+              <input type="text" v-model="experience.job_title" />
+            </p>
+            <p>
+              Company Name:
+              <input type="text" v-model="experience.company_name" />
+            </p>
+            <p>
+              Details:
+              <input type="text" v-model="experience.details" />
+            </p>
+            <button v-on:click="updateExperience(experience)">Update</button>
+            <button v-on:click="destroyExperience(experience)">Delete</button>
+            <button>Close</button>
+          </form>
+        </dialog>
+      </div>
       <button v-on:click="createWindow">Add Experience</button>
       <dialog id="create-experience-window">
         <form method="dialog">
@@ -113,9 +150,18 @@
 
     <div class="student-education">
       <button v-on:click="showEducation()">Education Input</button>
+      <h3>Education:</h3>
+      <div v-for="education in education_lists" :key="education.id">
+        <h3>{{ education.university }} | {{ education.degree }}</h3>
+        <p>
+          <strong>{{ education.start_date }} - {{ education.end_date }}</strong>
+        </p>
+        <p>{{ education.details }}</p>
+      </div>
+      <button v-on:click="showEducation()">Add Education</button>
       <dialog id="education-details">
         <form method="dialog">
-          <h1>Education Experience</h1>
+          <h1>Education</h1>
           <div class="form-group">
             <label>Start Date:</label>
             <input type="text" class="form-control" v-model="start" />
@@ -282,6 +328,24 @@ export default {
         this.skills_list = response.data;
       });
     },
+    showEducations: function () {
+      axios.get("/api/education/").then((response) => {
+        console.log(response.data);
+        this.education_list = response.data;
+      });
+    },
+    showCapstones: function () {
+      axios.get("/api/capstones/").then((response) => {
+        console.log(response.data);
+        this.capstones_list = response.data;
+      });
+    },
+    showExperiences: function () {
+      axios.get("/api/experiences/").then((response) => {
+        console.log(response.data);
+        this.experiences = response.data;
+      });
+    },
     createCapstone: function () {
       console.log("Creating your capstone info!");
       var params = {
@@ -403,6 +467,10 @@ export default {
           console.log("Success", response.data);
         })
         .catch((error) => console.log(error.response));
+    },
+
+    editExperienceModal: function () {
+      document.querySelector("#experience-details").showModal();
     },
 
     createExperience: function () {
