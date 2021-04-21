@@ -75,64 +75,40 @@
     <div id="student-experiences">
       <h3>Experience:</h3>
       <div id="experiences-list" v-for="experience in experiences" :key="experience.id">
-        <h4>{{ experience.company_name }}</h4>
+        <h4>{{ experience.company_name }}| {{ experience.job_title }}</h4>
+        <p>
+          <strong>{{ experience.start_date }} - {{ experience.end_date }}</strong>
+        </p>
+        <p>{{ experience.details }}</p>
         <button type="button" v-on:click="editExperienceModal">Edit</button>
         <dialog id="experience-details">
           <form method="dialog">
             <h1>Edit Your Experience</h1>
             <p>
               Start Date:
-              <input type="text" v-model="experiences.start_date" />
+              <input type="text" v-model="experience.start_date" />
             </p>
             <p>
               End Date:
-              <input type="text" v-model="experiences.end_date" />
+              <input type="text" v-model="experience.end_date" />
             </p>
             <p>
               Job Title:
-              <input type="text" v-model="experiences.job_title" />
+              <input type="text" v-model="experience.job_title" />
             </p>
             <p>
               Company Name:
-              <input type="text" v-model="experiences.company_name" />
+              <input type="text" v-model="experience.company_name" />
             </p>
             <p>
               Details:
-              <input type="text" v-model="experiences.details" />
+              <input type="text" v-model="experience.details" />
             </p>
             <button v-on:click="updateExperience(experience)">Update</button>
             <button v-on:click="destroyExperience(experience)">Delete</button>
             <button>Close</button>
           </form>
         </dialog>
-        <!-- <button v-on:click="createWindow">Add Experience</button>
-        <dialog id="create-experience-window">
-          <form method="dialog">
-            <h1>New Experience</h1>
-            <div class="form-group">
-              <label>Start Date:</label>
-              <input type="text" class="form-control" v-model="experiences.startDate" />
-            </div>
-            <div class="form-group">
-              <label>End Date:</label>
-              <input type="text" class="form-control" v-model="experiences.endDate" />
-            </div>
-            <div class="form-group">
-              <label>Job Title:</label>
-              <input type="text" class="form-control" v-model="experiences.jobTitle" />
-            </div>
-            <div class="form-group">
-              <label>Company Name:</label>
-              <input type="text" class="form-control" v-model="experiences.company_name" />
-            </div>
-            <div class="form-group">
-              <label>Details:</label>
-              <input type="text" class="form-control" v-model="experiences.details" />
-            </div>
-            <button v-on:click="createExperience()">Submit</button>
-            <button>close</button>
-          </form>
-        </dialog> -->
       </div>
       <button v-on:click="createWindow">Add Experience</button>
       <dialog id="create-experience-window">
@@ -166,10 +142,17 @@
 
     <div class="student-education">
       <h3>Education:</h3>
+      <div v-for="education in education_lists" :key="education.id">
+        <h3>{{ education.university }} | {{ education.degree }}</h3>
+        <p>
+          <strong>{{ education.start_date }} - {{ education.end_date }}</strong>
+        </p>
+        <p>{{ education.details }}</p>
+      </div>
       <button v-on:click="showEducation()">Add Education</button>
       <dialog id="education-details">
         <form method="dialog">
-          <h1>Education Experience</h1>
+          <h1>Education</h1>
           <div class="form-group">
             <label>Start Date:</label>
             <input type="text" class="form-control" v-model="start_date" />
