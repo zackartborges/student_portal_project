@@ -140,26 +140,26 @@
           <h1>Edit Your Experience</h1>
           <p>
             Start Date:
-            <input type="text" v-model="experience.start_date" />
+            <input type="text" v-model="currentExperience.start_date" />
           </p>
           <p>
             End Date:
-            <input type="text" v-model="experience.end_date" />
+            <input type="text" v-model="currentExperience.end_date" />
           </p>
           <p>
             Job Title:
-            <input type="text" v-model="experience.job_title" />
+            <input type="text" v-model="currentExperience.job_title" />
           </p>
           <p>
             Company Name:
-            <input type="text" v-model="experience.company_name" />
+            <input type="text" v-model="currentExperience.company_name" />
           </p>
           <p>
             Details:
-            <input type="text" v-model="experience.details" />
+            <input type="text" v-model="currentExperience.details" />
           </p>
-          <button v-on:click="updateExperience(experience)">Update</button>
-          <button v-on:click="destroyExperience(experience)">Delete</button>
+          <button v-on:click="updateExperience(currentExperience)">Update</button>
+          <button v-on:click="destroyExperience(currentExperience)">Delete</button>
           <button>Close</button>
         </form>
       </dialog>
@@ -261,6 +261,7 @@ export default {
         company_name: "",
         details: "",
       },
+      currentExperience: {},
       // education experience data
       start_date: "",
       end_date: "",
@@ -326,7 +327,6 @@ export default {
         this.experiences = response.data;
       });
     },
-  },
     createCapstone: function () {
       console.log("Creating your capstone info!");
       var params = {
@@ -488,6 +488,11 @@ export default {
         var index = this.experiences.indexOf(experience);
         this.experiences.splice(index, 1);
       });
+    },
+    targetExperience: function (experience) {
+      console.log(experience);
+      this.currentExperience = experience;
+      document.querySelector("#experience-details").showModal();
     },
     createCapstoneWindow: function () {
       document.querySelector("#create-capstone-window").showModal();
