@@ -89,34 +89,34 @@
         </p>
         <p>{{ experience.details }}</p>
         <button type="button" v-on:click="editExperienceModal">Edit</button>
-        <dialog id="experience-details">
-          <form method="dialog">
-            <h1>Edit Your Experience</h1>
-            <p>
-              Start Date:
-              <input type="text" v-model="experience.start_date" />
-            </p>
-            <p>
-              End Date:
-              <input type="text" v-model="experience.end_date" />
-            </p>
-            <p>
-              Job Title:
-              <input type="text" v-model="experience.job_title" />
-            </p>
-            <p>
-              Company Name:
-              <input type="text" v-model="experience.company_name" />
-            </p>
-            <p>
-              Details:
-              <input type="text" v-model="experience.details" />
-            </p>
-            <button v-on:click="updateExperience(experience)">Update</button>
-            <button v-on:click="destroyExperience(experience)">Delete</button>
-            <button>Close</button>
-          </form>
-        </dialog>
+      <dialog id="experience-details">
+        <form method="dialog">
+          <h1>Edit Your Experience</h1>
+          <p>
+            Start Date:
+            <input type="text" v-model="currentExperience.start_date" />
+          </p>
+          <p>
+            End Date:
+            <input type="text" v-model="currentExperience.end_date" />
+          </p>
+          <p>
+            Job Title:
+            <input type="text" v-model="currentExperience.job_title" />
+          </p>
+          <p>
+            Company Name:
+            <input type="text" v-model="currentExperience.company_name" />
+          </p>
+          <p>
+            Details:
+            <input type="text" v-model="currentExperience.details" />
+          </p>
+          <button v-on:click="updateExperience(currentExperience)">Update</button>
+          <button v-on:click="destroyExperience(currentExperience)">Delete</button>
+          <button>Close</button>
+        </form>
+      </dialog>
       </div>
       <button v-on:click="createWindow">Add Experience</button>
       <dialog id="create-experience-window">
@@ -146,35 +146,7 @@
           <button>close</button>
         </form>
       </dialog>
-      <button type="button" v-on:click="editExperienceModal">Edit</button>
-      <dialog id="experience-details">
-        <form method="dialog">
-          <h1>Edit Your Experience</h1>
-          <p>
-            Start Date:
-            <input type="text" v-model="currentExperience.start_date" />
-          </p>
-          <p>
-            End Date:
-            <input type="text" v-model="currentExperience.end_date" />
-          </p>
-          <p>
-            Job Title:
-            <input type="text" v-model="currentExperience.job_title" />
-          </p>
-          <p>
-            Company Name:
-            <input type="text" v-model="currentExperience.company_name" />
-          </p>
-          <p>
-            Details:
-            <input type="text" v-model="currentExperience.details" />
-          </p>
-          <button v-on:click="updateExperience(currentExperience)">Update</button>
-          <button v-on:click="destroyExperience(currentExperience)">Delete</button>
-          <button>Close</button>
-        </form>
-      </dialog>
+      
     </div>
 
     <div class="student-education">
@@ -193,11 +165,11 @@
           <h1>Education</h1>
           <div class="form-group">
             <label>Start Date:</label>
-            <input type="text" class="form-control" v-model="start" />
+            <input type="text" class="form-control" v-model="start_date" />
           </div>
           <div class="form-group">
             <label>End Date:</label>
-            <input type="text" class="form-control" v-model="end" />
+            <input type="text" class="form-control" v-model="end_date" />
           </div>
           <div class="form-group">
             <label>Degree:</label>
@@ -320,8 +292,8 @@ export default {
       },
       currentExperience: {},
       // education experience data
-      start: "",
-      end: "",
+      start_date: "",
+      end_date: "",
       degree: "",
       university: "",
       details: "",
@@ -463,7 +435,7 @@ export default {
       document.querySelector("#student-details").showModal();
     },
     createEducation: function () {
-      console.log("Creating Eduction info");
+      console.log("Creating Education info");
       var params = {
         startDate: this.start_date,
         endDate: this.end_date,
@@ -486,13 +458,13 @@ export default {
       console.log("Updating Eduction info");
       var params = {
         startDate: this.start_date,
-        endDate: this.endD_date,
+        endDate: this.end_date,
         degree: this.degree,
         university: this.university,
         details: this.details,
       };
       axios
-        .patch("/api/eduction" + education.id, params)
+        .patch("/api/education" + education.id, params)
         .then((response) => {
           console.log("Success", response.data);
         })
