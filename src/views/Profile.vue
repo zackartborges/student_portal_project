@@ -369,6 +369,25 @@ export default {
     createWindow: function () {
       document.querySelector("#create-experience-window").showModal();
     },
+    updateExperience: function (experience) {
+      var params = {
+        startDate: experience.startDate,
+        endDate: experience.endDate,
+        jobTitle: experience.jobTitle,
+        companyName: experience.companyName,
+        details: experience.details,
+      };
+      axios.patch("/api/experiences/" + experience.id, params).then((response) => {
+        console.log("Change Accepted", response.data);
+      });
+    },
+    destroyExperience: function (experience) {
+      axios.delete("/api/experiences/" + experience.id).then((response) => {
+        conosole.log("Delete Confirmed", response.data);
+        var index = this.experiences.indexOf(experience);
+        this.experiences.splice(index, 1);
+      });
+    }
     createCapstoneWindow: function () {
       document.querySelector("#create-capstone-window").showModal();
     },
